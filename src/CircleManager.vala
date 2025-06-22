@@ -2,6 +2,7 @@ using GLib;
 
 public class CircleManager : Object {
     public const double CIRCLE_RADIUS = 20.0;
+    private const double EDGE_PADDING = 5.0;
 
     public double? circle_x { get; private set; }
     public double? circle_y { get; private set; }
@@ -23,15 +24,14 @@ public class CircleManager : Object {
     }
 
     public void generate_new_circle() {
-        if (canvas_width <= 0 || canvas_height <= 0) {
-            canvas_width = 800;
-            canvas_height = 600;
-        }
-
-        circle_x = CIRCLE_RADIUS + (canvas_width - 2 * CIRCLE_RADIUS) * GLib.Random.next_double();
-        circle_y = CIRCLE_RADIUS + (canvas_height - 2 * CIRCLE_RADIUS) * GLib.Random.next_double();
-
-        print("New circle generated at (%.0f, %.0f)\n", circle_x, circle_y);
+        double min_x = CIRCLE_RADIUS + EDGE_PADDING;
+        double max_x = canvas_width - CIRCLE_RADIUS - EDGE_PADDING;
+        double min_y = CIRCLE_RADIUS + EDGE_PADDING;
+        double max_y = canvas_height - CIRCLE_RADIUS - EDGE_PADDING;
+        circle_x = min_x + (max_x - min_x) * GLib.Random.next_double();
+        circle_y = min_y + (max_y - min_y) * GLib.Random.next_double();
+        print("New circle generated at (%.0f, %.0f) with canvas size (%d, %d)\n",
+              circle_x, circle_y, canvas_width, canvas_height);
         circle_generated(circle_x, circle_y);
     }
 
