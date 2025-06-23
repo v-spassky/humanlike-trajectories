@@ -261,11 +261,18 @@ public class HumanlikeTrajectories : Gtk.Application {
 
         var traj_buttons_box = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 12);
 
-        var export_button = new Gtk.Button.with_label("Export Trajectories");
-        export_button.get_style_context().add_class("suggested-action");
-        export_button.clicked.connect(() => {
+        var export_json_button = new Gtk.Button.with_label("Export as JSON");
+        export_json_button.get_style_context().add_class("suggested-action");
+        export_json_button.clicked.connect(() => {
             var trajectories = trajectory_manager.get_all_trajectories();
             JsonExporter.export_trajectories(trajectories, trajectory_manager.get_trajectory_count());
+        });
+
+        var export_binary_button = new Gtk.Button.with_label("Export as Binary");
+        export_binary_button.get_style_context().add_class("suggested-action");
+        export_binary_button.clicked.connect(() => {
+            var trajectories = trajectory_manager.get_all_trajectories();
+            BinaryExporter.export_trajectories_binary(trajectories, trajectory_manager.get_trajectory_count());
         });
 
         var clear_button = new Gtk.Button.with_label("Clear All Trajectories");
@@ -274,7 +281,8 @@ public class HumanlikeTrajectories : Gtk.Application {
             trajectory_manager.clear_all_trajectories();
         });
 
-        traj_buttons_box.append(export_button);
+        traj_buttons_box.append(export_json_button);
+        traj_buttons_box.append(export_binary_button);
         traj_buttons_box.append(clear_button);
         box.append(traj_buttons_box);
 
